@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>HoYoDLE</title>
+        <title>Hoyodle</title>
         <meta name="description" content="The daily HoYoverse guessing game" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
