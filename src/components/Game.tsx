@@ -30,6 +30,7 @@ export default function Game({ characters, answer, totalGuesses = 6 }: GameProps
   const [guesses, setGuesses] = useState<string[]>([]);
   const [guessing, setGuessing] = useState<string>();
   const [isComplete, setIsComplete] = useState(false);
+  const [guessedCorrectly, setGuessedCorrectly] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure()
   const columns = filter(keys(characters[0]), (k: string) => !includes(["_id", "__v", "name"], k));
   const answerChar = find(characters, char => char._id == answer.answer)!
@@ -44,22 +45,22 @@ export default function Game({ characters, answer, totalGuesses = 6 }: GameProps
 
       // eslint-disable-next-line react-hooks/exhaustive-deps
       if (lastGameId === answer._id && Array.isArray(storedGuesses)) {
-        setGuesses(storedGuesses);
-        setIsComplete(hasCompleted);
+        // setGuesses(storedGuesses);
+        // setIsComplete(hasCompleted);
       }
     }
   }, []);
 
   // Check for game completion
   useEffect(() => {
-    if (guesses.length && (guesses.length > 4 || includes(guesses, answerChar.name))) {
-      onOpen()
-
+    if (guesses.length && (guesses.length >= totalGuesses || includes(guesses, answerChar.name))) {
       if (initialRender.current) {
         initialRender.current = false;
         return;
       }
       setIsComplete(true)
+      setGuessedCorrectly(includes(guesses, answerChar.name))
+      onOpen()
     }
   }, [guesses, answerChar.name, onOpen])
 
@@ -157,7 +158,7 @@ export default function Game({ characters, answer, totalGuesses = 6 }: GameProps
   }
 
   function renderResultMessage() {
-    if (guesses.length > totalGuesses) {
+    if (!guessedCorrectly) {
       return <>
         <Text textAlign="center">Today's guess was</Text>
         <Heading textAlign="center" size="md">{answerChar.name}</Heading>
@@ -209,7 +210,7 @@ export default function Game({ characters, answer, totalGuesses = 6 }: GameProps
       </Stack>
       {guesses.length ?
         <>
-          <Grid templateRows={`repeat(${totalGuesses + 1}, 1fr)`} templateColumns={`repeat(${columns.length}, 1fr)`} gap={1} color="white">
+          <Grid templateRows={`repeat(${totalGuesses}, 1fr)`} templateColumns={`repeat(${columns.length}, 1fr)`} gap={1} color="white">
             {map(columns, (col) => {
               let header = col;
               if (header === "weapon") header = "path"
