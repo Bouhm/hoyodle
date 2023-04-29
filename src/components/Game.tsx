@@ -45,8 +45,8 @@ export default function Game({ characters, answer, totalGuesses = 6 }: GameProps
 
       // eslint-disable-next-line react-hooks/exhaustive-deps
       if (lastGameId === answer._id && Array.isArray(storedGuesses)) {
-        // setGuesses(storedGuesses);
-        // setIsComplete(hasCompleted);
+        setGuesses(storedGuesses);
+        setIsComplete(hasCompleted);
       }
     }
   }, []);
