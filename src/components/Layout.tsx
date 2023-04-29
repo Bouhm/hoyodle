@@ -7,8 +7,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <div style={{ position: 'fixed', zIndex: 99, width: '100%' }}>
         <Navbar />
       </div>
-      <main> {children} </main>
-      <Footer />
+      <main>{children}</main>
     </>
   )
 }

@@ -10,7 +10,8 @@ export default function About() {
         <Text>
           Hoyodle is a hobby project made by Bouhm who also made Genshin Impact stats site https://mondstats.pages.dev which is no longer maintained.
           Hoyodle is a "dle" game (derivative of Wordle) in which players try to guess the character with provided clues.
-
+        </Text>
+        <Text>
           You can find me in Discord under Bouhm#2205. I'd love to hear your feedback, suggestions, and/or criticisms!
         </Text>
         <Divider />
