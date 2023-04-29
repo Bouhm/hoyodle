@@ -1,4 +1,4 @@
-import { Box, Container, Heading, ListItem, Stack, UnorderedList } from "@chakra-ui/react";
+import { Container, Heading, ListItem, Stack, UnorderedList } from "@chakra-ui/react";
 
 export default function Changelog() {
   return (

@@ -1,7 +1,7 @@
 import { trim } from '@/scripts/util';
-import { AbsoluteCenter, Box, Button, Center, Container, Divider, FormControl, Grid, GridItem, GridItemProps, Heading, Hide, Highlight, HStack, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Square, Stack, Text, useDisclosure } from '@chakra-ui/react'
-import { GroupBase, Select, SingleValue } from "chakra-react-select";
-import { find, forEach, map, keys, last, pickBy, omit, includes, filter, orderBy, first, capitalize } from 'lodash'
+import { Button, Container, Grid, GridItem, Heading, Hide, Highlight, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, Square, Stack, Text, useDisclosure } from '@chakra-ui/react'
+import { Select, SingleValue } from "chakra-react-select";
+import { find, map, keys, includes, filter, orderBy, first, capitalize } from 'lodash'
 import React, { useEffect, useRef } from 'react';
 import { useState } from 'react';
 import Image from 'next/image'
@@ -38,15 +38,15 @@ export default function Game({ characters, answer, totalGuesses = 5 }: GameProps
   // Get cached data
   useEffect(() => {
     if (typeof window !== 'undefined' && window.localStorage) {
-      // let lastGameId = localStorage.getItem('lastGameId');
-      // let storedGuesses = JSON.parse(localStorage.getItem('guesses')!) as string[];
-      // let hasCompleted = JSON.parse(localStorage.getItem('hasCompleted')!) as boolean;
+      let lastGameId = localStorage.getItem('lastGameId');
+      let storedGuesses = JSON.parse(localStorage.getItem('guesses')!) as string[];
+      let hasCompleted = JSON.parse(localStorage.getItem('hasCompleted')!) as boolean;
 
-      // // eslint-disable-next-line react-hooks/exhaustive-deps
-      // if (lastGameId === answer._id && Array.isArray(storedGuesses)) {
-      //   setGuesses(storedGuesses);
-      //   setIsComplete(hasCompleted);
-      // }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      if (lastGameId === answer._id && Array.isArray(storedGuesses)) {
+        setGuesses(storedGuesses);
+        setIsComplete(hasCompleted);
+      }
     }
   }, []);
 

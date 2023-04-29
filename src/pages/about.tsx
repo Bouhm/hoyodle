@@ -1,4 +1,4 @@
-import { Box, Button, Center, Container, Divider, Heading, ListItem, Stack, UnorderedList, Text } from "@chakra-ui/react";
+import { Container, Divider, Heading, ListItem, Stack, UnorderedList, Text } from "@chakra-ui/react";
 
 export default function About() {
   return (
