@@ -1,7 +1,16 @@
+import { Box, Text, useColorModeValue } from "@chakra-ui/react";
+
 export default function Footer() {
   return (
-    <footer>
-      Honkai: Star Rail and Genshin Impact are registered trademark of miHoYo Co., Ltd. Hoyodle is not affiliated or in any way officially connected with miHoYo.
-    </footer>
+    <Box
+      position="absolute"
+      bottom="1rem"
+      left={0}
+      right={0}
+      color={useColorModeValue('gray.700', 'gray.200')}>
+      <Text pt={6} fontSize={'sm'} textAlign={'center'}>
+        Honkai: Star Rail and Genshin Impact are registered trademarks of miHoYo Co., Ltd. Hoyodle is not affiliated or in any way officially connected with miHoYo.
+      </Text>
+    </Box>
   )
 }

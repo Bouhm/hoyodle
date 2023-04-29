@@ -6,7 +6,7 @@ import { AbsoluteCenter, Box, Center, Container, Spinner } from '@chakra-ui/reac
 import { useState, useEffect } from 'react'
 import bg from '../../../public/images/hsr_bg.webp'
 
-export default function StarRail() {
+export default function HonkaiStarRail() {
   const { characters, isLoading: isCharactersLoading } = useHSRCharacters();
   const { answer, isLoading: isAnswerLoading } = useHSRAnswer();
   const { bgUrl, setBgUrl } = useGlobalContext();
