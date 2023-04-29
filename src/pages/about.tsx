@@ -2,11 +2,9 @@ import { Container, Divider, Heading, ListItem, Stack, UnorderedList, Text } fro
 
 export default function About() {
   return (
-    <Container maxW="container.lg">
-      <Stack spacing={3} color="white">
-        <Heading as='h1'>
-          About Hoyodle
-        </Heading>
+    <Container maxW="container.lg" color="white">
+      <Heading as='h1' size='2xl' marginBottom="2rem">About Hoyodle</Heading>
+      <Stack spacing={3}>
         <Text>
           Hoyodle is a hobby project made by Bouhm who also made Genshin Impact stats site https://mondstats.pages.dev which is no longer maintained.
           Hoyodle is a "dle" game (derivative of Wordle) in which players try to guess the character with provided clues.
