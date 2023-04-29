@@ -24,7 +24,7 @@ export default function WithSubnavigation() {
   return (
     <Box>
       <Flex
-        bg={useColorModeValue('white', 'whiteAlpha.100')}
+        bg={'#1E1F32'}
         color={useColorModeValue('gray.600', 'white')}
         minH={'60px'}
         py={{ base: 2 }}
@@ -50,7 +50,7 @@ export default function WithSubnavigation() {
           <Text
             textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
             fontFamily={'heading'}
-            color={useColorModeValue('whiteAlpha.100', 'white')}>
+            color={useColorModeValue('whiteAlpha.50', 'white')}>
             <Link href="/">
               <Logo />
             </Link>
@@ -71,8 +71,8 @@ export default function WithSubnavigation() {
 
 const DesktopNav = () => {
   const linkColor = useColorModeValue('gray.600', 'gray.200');
-  const linkHoverColor = useColorModeValue('whiteAlpha.100', 'white');
-  const popoverContentBgColor = useColorModeValue('white', 'whiteAlpha.100');
+  const linkHoverColor = useColorModeValue('whiteAlpha.50', 'white');
+  const popoverContentBgColor = useColorModeValue('white', 'whiteAlpha.50');
 
   return (
     <Stack direction={'row'} spacing={4} zIndex={99}>
@@ -153,7 +153,7 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
 const MobileNav = () => {
   return (
     <Stack
-      bg={useColorModeValue('white', 'whiteAlpha.100')}
+      bg={'#212338'}
       p={4}
       display={{ md: 'none' }}>
       {NAV_ITEMS.map((navItem) => (
