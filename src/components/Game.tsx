@@ -1,5 +1,5 @@
 import { trim } from '@/scripts/util';
-import { Box, Button, Container, Divider, Grid, GridItem, Heading, Hide, Highlight, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, Square, Stack, Text, Tooltip, useDisclosure } from '@chakra-ui/react'
+import { Button, Container, Grid, GridItem, Heading, Hide, Highlight, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, Square, Stack, Text, Tooltip, useDisclosure } from '@chakra-ui/react'
 import { Select, SingleValue } from "chakra-react-select";
 import { find, map, keys, includes, filter, orderBy, first, capitalize } from 'lodash'
 import React, { useEffect, useRef } from 'react';
@@ -162,12 +162,12 @@ export default function Game({ characters, answer, totalGuesses = 6 }: GameProps
         <Text textAlign="center">Today's guess was</Text>
         <Heading textAlign="center" size="md">{answerChar.name}</Heading>
         <Image src={`/images/hsr/characters/${trim(answerChar.name)}_splash.webp`} width="512" height="512" alt={answerChar.name} />
-        <Text textAlign="center">{"You were unable to guess correctly."}</Text >
+        <Text textAlign="center" style={{ marginTop: '1rem' }}>{"You were unable to guess correctly."}</Text >
       </>
     } else {
       return <>
         <Image src={`/images/hsr/characters/${trim(answerChar.name)}_splash.webp`} width="512" height="512" alt={answerChar.name} />
-        <Text textAlign="center">
+        <Text textAlign="center" style={{ marginTop: '1rem' }}>
           <Highlight query={guesses.length.toString()} styles={{ px: '2', py: '1', rounded: 'full', bg: 'teal.100' }}>
             {`You guessed correctly in  ${guesses.length.toString()}  ${guesses.length === 1 ? "try! 💯" : " tries!"}`}
           </Highlight>
@@ -177,7 +177,7 @@ export default function Game({ characters, answer, totalGuesses = 6 }: GameProps
   }
 
   return (<>
-    <Modal isOpen={isOpen} onClose={onClose} isCentered motionPreset='slideInBottom'>
+    <Modal isOpen={isOpen} onClose={onClose} isCentered motionPreset='scale'>
       <ModalOverlay />
       <ModalContent color="white">
         <ModalCloseButton />
@@ -254,7 +254,9 @@ function GuessItem({ correctness, children }: GuessItemProps) {
   }
 
   return (
-    <GridItem bg={correctness ? `${color}.500` : ""}>
+    <GridItem
+      bg={correctness ? `${color}.500` : ""}
+    >
       <Square
         display="flex"
         alignItems="center"
@@ -264,6 +266,7 @@ function GuessItem({ correctness, children }: GuessItemProps) {
         textAlign="center"
         style={{ height: '100%' }}
         padding={[0, 0, 1, 1, 1]}
+        border="1px solid rgba(255,255,255,0.4)"
         centerContent
       >
         {children}
