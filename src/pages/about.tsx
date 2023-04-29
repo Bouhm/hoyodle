@@ -2,7 +2,7 @@ import { Container, Divider, Heading, ListItem, Stack, UnorderedList, Text } fro
 
 export default function About() {
   return (
-    <Container maxW="container.lg" color="white">
+    <Container maxW="container.lg" color="white" paddingTop="2rem">
       <Heading as='h1' size='2xl' marginBottom="2rem">About Hoyodle</Heading>
       <Stack spacing={3}>
         <Text>

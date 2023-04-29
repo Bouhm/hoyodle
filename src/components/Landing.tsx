@@ -4,7 +4,7 @@ import Footer from "./Footer"
 
 export default function Landing() {
   return (
-    <Box >
+    <Box paddingTop="2rem">
       <Container>
         <Center color="white" marginBottom={'3rem'}>
           <HStack>

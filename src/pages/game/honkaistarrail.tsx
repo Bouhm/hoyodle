@@ -25,6 +25,7 @@ export default function HonkaiStarRail() {
       backgroundRepeat="no-repeat"
       width="100%"
       height="100%"
+      paddingTop="2rem"
     >
       {
         isLoading ? <AbsoluteCenter><Spinner

@@ -2,7 +2,7 @@ import { Container, Divider, Heading, ListItem, Stack, UnorderedList } from "@ch
 
 export default function Changelog() {
   return (
-    <Container maxW="container.lg" color="white">
+    <Container maxW="container.lg" color="white" paddingTop="2rem">
       <Heading as='h1' size='2xl' marginBottom="2rem">Changelog</Heading>
       <Stack spacing={3}>
         <Heading as='h1'>
