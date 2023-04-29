@@ -2,7 +2,7 @@ import { trim } from '@/scripts/util';
 import { AbsoluteCenter, Box, Button, Center, Container, Divider, FormControl, Grid, GridItem, GridItemProps, Heading, Hide, Highlight, HStack, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Square, Stack, Text, useDisclosure } from '@chakra-ui/react'
 import { GroupBase, Select, SingleValue } from "chakra-react-select";
 import { find, forEach, map, keys, last, pickBy, omit, includes, filter, orderBy, first, capitalize } from 'lodash'
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useState } from 'react';
 import Image from 'next/image'
 import AnswerResponse from './interfaces/AnswerResponse';
@@ -33,10 +33,49 @@ export default function Game({ characters, answer, totalGuesses = 5 }: GameProps
   const { isOpen, onOpen, onClose } = useDisclosure()
   const columns = filter(keys(characters[0]), (k: string) => !includes(["_id", "__v", "name"], k));
   const answerChar = find(characters, char => char._id == answer.answer)!
+  const initialRender = useRef(true);
+
+  // Get cached data
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      let lastGameId = localStorage.getItem('lastGameId');
+      let storedGuesses = JSON.parse(localStorage.getItem('guesses')!) as string[];
+      let hasCompleted = JSON.parse(localStorage.getItem('hasCompleted')!) as boolean;
+
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      if (lastGameId === answer._id && Array.isArray(storedGuesses)) {
+        setGuesses(storedGuesses);
+        setIsComplete(hasCompleted);
+      }
+    }
+  }, []);
+
+  // Check for game completion
+  useEffect(() => {
+    if (guesses.length && (guesses.length > 4 || includes(guesses, answerChar.name))) {
+      onOpen()
+
+      if (initialRender.current) {
+        initialRender.current = false;
+        return;
+      }
+      setIsComplete(true)
+    }
+  }, [guesses, answerChar.name, onOpen])
 
   useEffect(() => {
-    checkGameComplete();
+    if (initialRender.current) {
+      initialRender.current = false;
+      return;
+    }
+
+    localStorage.setItem('lastGameId', answer._id)
+    localStorage.setItem('guesses', JSON.stringify(guesses))
   }, [guesses])
+
+  useEffect(() => {
+    localStorage.setItem('hasCompleted', JSON.stringify(isComplete))
+  }, [isComplete])
 
   function generationOptions(guesses: string[]) {
     return map(
@@ -62,19 +101,11 @@ export default function Game({ characters, answer, totalGuesses = 5 }: GameProps
     return trim(name1) === trim(name2)
   }
 
-  function checkGameComplete() {
-    console.log(guesses.length, answerChar.name, last(guesses), includes(guesses, answerChar.name))
-    if (guesses.length && (guesses.length > 4 || includes(guesses, answerChar.name))) {
-      setIsComplete(true)
-      onOpen()
-    }
-  }
-
   function renderGuessItem(key: string, content: string) {
     switch (key) {
       case "rarity":
         return <Text display="flex" alignItems="center">
-          {content}&nbsp;<StarIcon fontSize={11} />
+          {content}{' '}<StarIcon fontSize={11} />
         </Text>
       case "weapon":
       case "element":
@@ -165,7 +196,7 @@ export default function Game({ characters, answer, totalGuesses = 5 }: GameProps
           mt={4}
           colorScheme='purple'
           type='submit'
-          isDisabled={!guessing}
+          isDisabled={!guessing || isComplete}
           onClick={handleSubmit}
         ><ArrowForwardIcon /></Button>
       </Stack>

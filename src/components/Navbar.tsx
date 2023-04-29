@@ -75,7 +75,7 @@ const DesktopNav = () => {
   const popoverContentBgColor = useColorModeValue('white', 'whiteAlpha.50');
 
   return (
-    <Stack direction={'row'} spacing={4}>
+    <Stack direction={'row'} spacing={4} zIndex={99}>
       {NAV_ITEMS.map((navItem) => (
         <Box key={navItem.label} display="flex" alignItems={"center"}>
           <Popover trigger={'hover'} placement={'bottom-start'}>
@@ -167,7 +167,7 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
-    <Stack spacing={4} onClick={children && onToggle}>
+    <Stack spacing={4} onClick={children && onToggle} zIndex={99}>
       <Flex
         py={2}
         as={Link}

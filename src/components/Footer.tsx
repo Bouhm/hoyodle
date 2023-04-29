@@ -8,6 +8,7 @@ export default function Footer() {
       left={0}
       right={0}
       color={useColorModeValue('gray.700', 'gray.200')}
+      z-index={-1}
     >
       <Container
         color="white"

@@ -16,7 +16,7 @@ export default function HonkaiStarRail() {
     if (characters && answer) {
       setIsLoading(false)
     }
-  }, [isCharactersLoading, isAnswerLoading])
+  }, [isCharactersLoading, isAnswerLoading, answer, characters, setIsLoading])
 
   useEffect(() => {
     // setBgUrl(bg.src)
