@@ -261,7 +261,7 @@ function GuessItem({ correctness, children }: GuessItemProps) {
 
   return (
     <GridItem
-      bg={correctness ? `${color}.500` : ""}
+      bg={correctness ? `${color}.600` : ""}
     >
       <Square
         display="flex"
