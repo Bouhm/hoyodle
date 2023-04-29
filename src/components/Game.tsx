@@ -157,7 +157,7 @@ export default function Game({ characters, answer, totalGuesses = 6 }: GameProps
   }
 
   function renderResultMessage() {
-    if (guesses.length > 4) {
+    if (guesses.length > totalGuesses) {
       return <>
         <Text textAlign="center">Today's guess was</Text>
         <Heading textAlign="center" size="md">{answerChar.name}</Heading>
