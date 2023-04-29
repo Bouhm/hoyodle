@@ -38,15 +38,15 @@ export default function Game({ characters, answer, totalGuesses = 5 }: GameProps
   // Get cached data
   useEffect(() => {
     if (typeof window !== 'undefined' && window.localStorage) {
-      let lastGameId = localStorage.getItem('lastGameId');
-      let storedGuesses = JSON.parse(localStorage.getItem('guesses')!) as string[];
-      let hasCompleted = JSON.parse(localStorage.getItem('hasCompleted')!) as boolean;
+      // let lastGameId = localStorage.getItem('lastGameId');
+      // let storedGuesses = JSON.parse(localStorage.getItem('guesses')!) as string[];
+      // let hasCompleted = JSON.parse(localStorage.getItem('hasCompleted')!) as boolean;
 
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      if (lastGameId === answer._id && Array.isArray(storedGuesses)) {
-        setGuesses(storedGuesses);
-        setIsComplete(hasCompleted);
-      }
+      // // eslint-disable-next-line react-hooks/exhaustive-deps
+      // if (lastGameId === answer._id && Array.isArray(storedGuesses)) {
+      //   setGuesses(storedGuesses);
+      //   setIsComplete(hasCompleted);
+      // }
     }
   }, []);
 
@@ -161,9 +161,9 @@ export default function Game({ characters, answer, totalGuesses = 5 }: GameProps
       return <>
         <Image src={`/images/hsr/characters/${trim(answerChar.name)}_splash.webp`} width="512" height="512" alt={answerChar.name} />
         <Text textAlign="center">
-          {"You guessed correctly in "}
-          <Highlight query='spotlight' styles={{ bg: 'teal.100' }}>{guesses.length.toString()}</Highlight>
-          {guesses.length === 1 ? " try! 💯" : " tries!"}
+          <Highlight query={guesses.length.toString()} styles={{ px: '2', py: '1', rounded: 'full', bg: 'teal.100' }}>
+            {`You guessed correctly in  ${guesses.length.toString()}  ${guesses.length === 1 ? "try! 💯" : " tries!"}`}
+          </Highlight>
         </Text >
       </>
     }
