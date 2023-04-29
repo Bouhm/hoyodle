@@ -1,5 +1,5 @@
 import { trim } from '@/scripts/util';
-import { Button, Container, Grid, GridItem, Heading, Hide, Highlight, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, Square, Stack, Text, useDisclosure } from '@chakra-ui/react'
+import { Box, Button, Container, Divider, Grid, GridItem, Heading, Hide, Highlight, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, Square, Stack, Text, Tooltip, useDisclosure } from '@chakra-ui/react'
 import { Select, SingleValue } from "chakra-react-select";
 import { find, map, keys, includes, filter, orderBy, first, capitalize } from 'lodash'
 import React, { useEffect, useRef } from 'react';
@@ -26,7 +26,7 @@ type GameProps = {
   totalGuesses?: number
 }
 
-export default function Game({ characters, answer, totalGuesses = 5 }: GameProps) {
+export default function Game({ characters, answer, totalGuesses = 6 }: GameProps) {
   const [guesses, setGuesses] = useState<string[]>([]);
   const [guessing, setGuessing] = useState<string>();
   const [isComplete, setIsComplete] = useState(false);
@@ -109,15 +109,22 @@ export default function Game({ characters, answer, totalGuesses = 5 }: GameProps
         </Text>
       case "weapon":
       case "element":
-        return <Container display="flex" flexFlow="row" alignItems="center" justifyContent="center">
-          <Image
-            className={key === "element" ? "image-glow" : ""}
-            src={`/images/hsr/${key}s/${trim(content as string)}.webp`}
-            width="40" height="40"
-            alt={content as string}
-            style={{ margin: "0 0.5rem" }}
-          />
-          <Hide breakpoint='(max-width: 800px)'><Text padding={1} minWidth="5.5rem">{content}</Text></Hide>
+        return <Container
+          display="flex"
+          flexFlow="row"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Tooltip label={content as string} fontSize='md'>
+            <Image
+              className={key === "element" ? "image-shadow" : ""}
+              src={`/images/hsr/${key}s/${trim(content as string)}.webp`}
+              width="40" height="40"
+              alt={content as string}
+              style={{ margin: "0 0.5rem" }}
+            />
+          </Tooltip>
+          <Hide breakpoint='(max-width: 768px)'><Text padding={1} minWidth="5.5rem">{content}</Text></Hide>
         </Container>
       case "sex":
         return <Text>{first(content as string)?.toUpperCase()}</Text>
@@ -182,7 +189,7 @@ export default function Game({ characters, answer, totalGuesses = 5 }: GameProps
       </ModalContent>
     </Modal>
     <Container maxW="container.sm" centerContent>
-      <Stack direction='row' w="100%" justifyContent={'center'}>
+      <Stack direction='row' w="100%" justifyContent={'center'} marginBottom="1rem">
         <Select
           useBasicStyles
           placeholder="Select a character..."
@@ -254,9 +261,9 @@ function GuessItem({ correctness, children }: GuessItemProps) {
         fontSize="sm"
         fontWeight={600}
         lineHeight="1rem"
-        padding={1}
         textAlign="center"
         style={{ height: '100%' }}
+        padding={[0, 0, 1, 1, 1]}
         centerContent
       >
         {children}

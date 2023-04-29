@@ -18,18 +18,22 @@ export default function HonkaiStarRail() {
   }, [isCharactersLoading, isAnswerLoading, answer, characters, setIsLoading])
 
   return (
-    <Box>
-      <Center>
-        <Image
-          src="/images/hsr/choochoo.webp"
-          alt="Honkai: Star Rail"
-          width={1191 / 2.5}
-          height={720 / 2.5}
-          style={{ opacity: 0.6, maxWidth: "50%" }}
-        />
-      </Center>
+    <Box
+      backgroundImage="url('/images/hsr/choochoo.webp')"
+      backgroundSize="auto"
+      backgroundPosition="center"
+      backgroundRepeat="no-repeat"
+      width="100%"
+      height="100%"
+    >
       {
-        isLoading ? <AbsoluteCenter><Spinner /></AbsoluteCenter>
+        isLoading ? <AbsoluteCenter><Spinner
+          thickness='4px'
+          speed='0.65s'
+          emptyColor='gray.200'
+          color='purple.500'
+          size='xl'
+        /></AbsoluteCenter>
           :
           <Game characters={characters} answer={answer} />
       }

@@ -1,3 +1,4 @@
+import { Box } from "@chakra-ui/react";
 import Navbar from "./Navbar";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -6,7 +7,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <div style={{ position: 'fixed', zIndex: 99, width: '100%' }}>
         <Navbar />
       </div>
-      <main>{children}</main>
+      <main><Box height="100%">{children}</Box></main>
     </>
   )
 }

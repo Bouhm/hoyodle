@@ -6,6 +6,21 @@ export default function Changelog() {
       <Heading as='h1' size='2xl' marginBottom="2rem">Changelog</Heading>
       <Stack spacing={3}>
         <Heading as='h1'>
+          v0.2.0
+        </Heading>
+        <UnorderedList>
+          <ListItem>Update landing page</ListItem>
+        </UnorderedList>
+        <Heading as='h1'>
+          v0.1.2
+        </Heading>
+        <UnorderedList>
+          <ListItem>Adjust padding for smaller screen sizes</ListItem>
+          <ListItem>Use background images</ListItem>
+          <ListItem>Add tooltips for mobile</ListItem>
+        </UnorderedList>
+        <Divider />
+        <Heading as='h1'>
           v0.1.1
         </Heading>
         <UnorderedList>
