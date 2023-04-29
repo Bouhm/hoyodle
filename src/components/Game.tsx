@@ -186,7 +186,7 @@ export default function Game({ characters, answer, totalGuesses = 5 }: GameProps
           </Grid>
         </>
         :
-        <Text>
+        <Text color="white" marginTop="2rem">
           Start the game by making a guess.
         </Text>
       }
