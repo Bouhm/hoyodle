@@ -1,5 +1,5 @@
 import { trim } from '@/scripts/util';
-import { Button, Container, Grid, GridItem, Heading, Hide, Highlight, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, Square, Stack, Text, Tooltip, useDisclosure } from '@chakra-ui/react'
+import { Button, Container, Grid, GridItem, Heading, Hide, Highlight, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, Popover, PopoverBody, PopoverContent, PopoverTrigger, Square, Stack, Text, useDisclosure } from '@chakra-ui/react'
 import { Select, SingleValue } from "chakra-react-select";
 import { find, map, keys, includes, filter, orderBy, first, capitalize } from 'lodash'
 import React, { useEffect, useRef } from 'react';
@@ -31,7 +31,7 @@ export default function Game({ characters, answer, totalGuesses = 6 }: GameProps
   const [guessing, setGuessing] = useState<string>();
   const [isComplete, setIsComplete] = useState(false);
   const [guessedCorrectly, setGuessedCorrectly] = useState(false);
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure()
   const columns = filter(keys(characters[0]), (k: string) => !includes(["_id", "__v", "name"], k));
   const answerChar = find(characters, char => char._id == answer.answer)!
   const initialRender = useRef(true);
@@ -60,9 +60,9 @@ export default function Game({ characters, answer, totalGuesses = 6 }: GameProps
       }
       setIsComplete(true)
       setGuessedCorrectly(includes(guesses, answerChar.name))
-      onOpen()
+      onModalOpen()
     }
-  }, [guesses, answerChar.name, onOpen])
+  }, [guesses, answerChar.name, onModalOpen])
 
   useEffect(() => {
     if (initialRender.current) {
@@ -116,15 +116,20 @@ export default function Game({ characters, answer, totalGuesses = 6 }: GameProps
           alignItems="center"
           justifyContent="center"
         >
-          <Tooltip label={content as string} fontSize='md'>
-            <Image
-              className={key === "element" ? "image-shadow" : ""}
-              src={`/images/hsr/${key}s/${trim(content as string)}.webp`}
-              width="40" height="40"
-              alt={content as string}
-              style={{ margin: "0 0.5rem" }}
-            />
-          </Tooltip>
+          <Popover>
+            <PopoverTrigger>
+              <Image
+                className={key === "element" ? "image-shadow" : ""}
+                src={`/images/hsr/${key}s/${trim(content as string)}.webp`}
+                width="40" height="40"
+                alt={content as string}
+                style={{ margin: "0 0.5rem" }}
+              />
+            </PopoverTrigger>
+            <PopoverContent maxWidth={"7rem"}>
+              <PopoverBody>{content}</PopoverBody>
+            </PopoverContent>
+          </Popover>
           <Hide breakpoint='(max-width: 768px)'><Text padding={1} minWidth="5.5rem">{content}</Text></Hide>
         </Container>
       case "sex":
@@ -178,7 +183,7 @@ export default function Game({ characters, answer, totalGuesses = 6 }: GameProps
   }
 
   return (<>
-    <Modal isOpen={isOpen} onClose={onClose} isCentered motionPreset='scale'>
+    <Modal isOpen={isModalOpen} onClose={onModalClose} isCentered motionPreset='scale'>
       <ModalOverlay />
       <ModalContent color="white">
         <ModalCloseButton />
