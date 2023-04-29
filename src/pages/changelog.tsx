@@ -11,6 +11,7 @@ export default function Changelog() {
         <UnorderedList>
           <ListItem>Optimize image assets</ListItem>
           <ListItem>Deploy on registered domain</ListItem>
+          <ListItem>Adjust image resizing on mobile screen width</ListItem>
         </UnorderedList>
         <Divider />
         <Heading as='h1'>

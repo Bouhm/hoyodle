@@ -6,7 +6,7 @@ export default function Landing() {
     <Box>
       <AbsoluteCenter>
         <Heading textAlign="center" color="gray">
-          More exciting game modes and features in development. Stay tuned!
+          More challenge modes and features in development. Stay tuned!
         </Heading>
       </AbsoluteCenter>
       <Footer />

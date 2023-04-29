@@ -9,7 +9,6 @@ import Image from 'next/image'
 export default function HonkaiStarRail() {
   const { characters, isLoading: isCharactersLoading } = useHSRCharacters();
   const { answer, isLoading: isAnswerLoading } = useHSRAnswer();
-  const { bgUrl, setBgUrl } = useGlobalContext();
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
@@ -18,13 +17,17 @@ export default function HonkaiStarRail() {
     }
   }, [isCharactersLoading, isAnswerLoading, answer, characters, setIsLoading])
 
-  useEffect(() => {
-    // setBgUrl(bg.src)
-  }, [bgUrl, setBgUrl])
-
   return (
     <Box>
-      <Center><Image src="/images/hsr/choochoo.webp" alt="Honkai: Star Rail" width={1191 / 2} height={720 / 2} style={{ opacity: 0.6 }} /></Center>
+      <Center>
+        <Image
+          src="/images/hsr/choochoo.webp"
+          alt="Honkai: Star Rail"
+          width={1191 / 2.5}
+          height={720 / 2.5}
+          style={{ opacity: 0.6, maxWidth: "50%" }}
+        />
+      </Center>
       {
         isLoading ? <AbsoluteCenter><Spinner /></AbsoluteCenter>
           :
