@@ -1,11 +1,13 @@
 import { trim } from '@/scripts/util';
-import { Button, Center, Container, FormControl, Grid, GridItem, GridItemProps, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure } from '@chakra-ui/react'
+import { AbsoluteCenter, Box, Button, Center, Container, FormControl, Grid, GridItem, GridItemProps, Hide, HStack, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Square, Stack, Text, useDisclosure } from '@chakra-ui/react'
 import { GroupBase, Select, SingleValue } from "chakra-react-select";
-import { find, forEach, map, keys, last, pickBy, omit, includes, filter, orderBy } from 'lodash'
+import { find, forEach, map, keys, last, pickBy, omit, includes, filter, orderBy, first } from 'lodash'
 import React, { useEffect } from 'react';
 import { useState } from 'react';
+import Image from 'next/image'
 import AnswerResponse from './interfaces/AnswerResponse';
 import CharacterResponse from './interfaces/CharacterResponse';
+import { ArrowForwardIcon, StarIcon } from '@chakra-ui/icons';
 
 enum Correctness {
   Correct = "Correct",
@@ -29,7 +31,7 @@ export default function Game({ characters, answer, totalGuesses = 5 }: GameProps
   const [guessing, setGuessing] = useState<string>();
   const [isComplete, setIsComplete] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const columns = filter(keys(characters[0]), (k: string) => !includes(["_id", "__v"], k));
+  const columns = filter(keys(characters[0]), (k: string) => !includes(["_id", "__v", "name"], k));
   const answerChar = find(characters, char => char._id == answer.answer)!
 
   useEffect(() => {
@@ -63,9 +65,34 @@ export default function Game({ characters, answer, totalGuesses = 5 }: GameProps
   function checkGameComplete() {
     console.log(guesses.length, answerChar.name, last(guesses), includes(guesses, answerChar.name))
     if (guesses.length && (guesses.length > 4 || includes(guesses, answerChar.name))) {
-      console.log("COMPLETE!")
       setIsComplete(true)
       onOpen()
+    }
+  }
+
+  function renderGuessItem(key: string, content: string) {
+    switch (key) {
+      case "rarity":
+        return <Text display="flex" alignItems="center">
+          {content}&nbsp;<StarIcon fontSize={11} />
+        </Text>
+      case "weapon":
+      case "element":
+        return <Container display="flex" flexFlow="row" alignItems="center" justifyContent="center">
+          <Image
+            className={key === "element" ? "image-glow" : ""}
+            src={`/images/hsr/${key}s/${trim(content as string)}.webp`}
+            width="40" height="40"
+            alt={content as string}
+            style={{ margin: "0 0.5rem" }}
+          />
+          <Hide breakpoint='(max-width: 800px)'><Text padding={1} textAlign="left" minWidth="5rem">{content}</Text></Hide>
+        </Container>
+      case "sex":
+        return <Text>{first(content as string)?.toUpperCase()}</Text>
+      case "faction":
+      case "default":
+        return <Text whiteSpace="pre-wrap">{content}</Text>
     }
   }
 
@@ -75,14 +102,16 @@ export default function Game({ characters, answer, totalGuesses = 5 }: GameProps
     return <>
       {map(guesses, (guess, i) => {
         const guessChar = find(characters, char => areNamesEqual(char.name, guess))!;
-
         return <React.Fragment key={`${guessChar._id}-${i}`}>
           {map(columns, (col, j) => {
             const key = col as keyof CharacterResponse;
             let correctness = guessChar[key] === answerChar[key] ? Correctness.Correct : Correctness.Incorrect;
 
+
             return <React.Fragment key={`${guessChar._id}-${i}-${j}`}>
-              <GuessItem correctness={correctness} content={guessChar[key]} />
+              <GuessItem correctness={correctness}>
+                {renderGuessItem(col, guessChar[key].toString())}
+              </GuessItem>
             </React.Fragment>
           })}
         </React.Fragment>
@@ -105,49 +134,53 @@ export default function Game({ characters, answer, totalGuesses = 5 }: GameProps
         <ModalHeader>Results</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
+          Today's guess was
+          <Image src={`/images/hsr/characters/${trim(answerChar.name)}_splash.webp`} width="512" height="512" alt={answerChar.name} />
           {renderResultMessage()}
         </ModalBody>
         <ModalFooter>
         </ModalFooter>
       </ModalContent>
     </Modal>
-    <Center>
-      <Container>
-        <FormControl>
-          <Select
-            name="guess-input"
-            onChange={handleChange}
-            options={generationOptions(guesses)}
-          />
-          <Button
-            mt={4}
-            colorScheme='teal'
-            type='submit'
-            isDisabled={!guessing}
-            onClick={handleSubmit}
-          />
-        </FormControl>
+    <Container maxW="container.sm" centerContent>
+      <Stack direction='row' w="100%" justifyContent={'center'}>
+        <Select
+          useBasicStyles
+          placeholder="Select a character..."
+          classNamePrefix="rselect"
+          name="guess-input"
+          selectedOptionColorScheme="purple"
+          onChange={handleChange}
+          options={generationOptions(guesses)}
+        />
+        <Button
+          mt={4}
+          colorScheme='purple'
+          type='submit'
+          isDisabled={!guessing}
+          onClick={handleSubmit}
+        ><ArrowForwardIcon /></Button>
+      </Stack>
 
-        <Grid templateRows={`repeat(${totalGuesses + 1}, 1fr)`} templateColumns={`repeat(${columns.length}, 1fr)`} gap={1}>
-          {map(columns, (col) => (
-            <GridItem key={`header-${col}`}>
-              {col}
-            </GridItem>
-          ))}
-          {renderGuessResults()}
-        </Grid>
-      </Container>
-    </Center >
+      <Grid templateRows={`repeat(${totalGuesses + 1}, 1fr)`} templateColumns={`repeat(${columns.length}, 1fr)`} gap={1} color="white">
+        {map(columns, (col) => (
+          <React.Fragment key={`empty${col}`}>
+            <GuessItem />
+          </React.Fragment>
+        ))}
+        {renderGuessResults()}
+      </Grid>
+    </Container>
   </>
   )
 }
 
 type GuessItemProps = {
-  correctness: Correctness,
-  content: string | number,
+  correctness?: Correctness,
+  children?: React.ReactNode,
 }
 
-function GuessItem({ correctness, content }: GuessItemProps) {
+function GuessItem({ correctness, children }: GuessItemProps) {
   let color = "green";
 
   switch (correctness) {
@@ -163,9 +196,21 @@ function GuessItem({ correctness, content }: GuessItemProps) {
   }
 
   return (
-    <GridItem bg={`${color}.500`}>
-      {content}
-    </GridItem>
+    <GridItem bg={correctness ? `${color}.500` : ""}>
+      <Square
+        display="flex"
+        alignItems="center"
+        fontSize="sm"
+        fontWeight={600}
+        lineHeight="1rem"
+        padding={1}
+        textAlign="center"
+        style={{ height: '100%' }}
+        centerContent
+      >
+        {children}
+      </Square>
+    </GridItem >
   )
 }
 

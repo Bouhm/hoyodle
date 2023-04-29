@@ -2,7 +2,7 @@ import Game from '@/components/Game'
 import { useGlobalContext } from '@/components/hooks/useGlobalContext'
 import useHSRAnswer from '@/components/hooks/useHSRAnswer'
 import useHSRCharacters from '@/components/hooks/useHSRCharacters'
-import { Center, Container, Spinner } from '@chakra-ui/react'
+import { AbsoluteCenter, Box, Center, Container, Spinner } from '@chakra-ui/react'
 import { useState, useEffect } from 'react'
 import bg from '../../../public/images/hsr_bg.webp'
 
@@ -23,16 +23,12 @@ export default function StarRail() {
   }, [bgUrl, setBgUrl])
 
   return (
-    <>
-      <Center>
-        <Container>
-          {
-            isLoading ? <Spinner />
-              :
-              <Game characters={characters} answer={answer} />
-          }
-        </Container>
-      </Center>
-    </>
+    <Box>
+      {
+        isLoading ? <Spinner />
+          :
+          <Game characters={characters} answer={answer} />
+      }
+    </Box>
   )
 }
