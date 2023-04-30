@@ -1,5 +1,5 @@
 import { trim } from '@/scripts/util';
-import { Button, Container, Grid, GridItem, Heading, Hide, Highlight, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, Popover, PopoverBody, PopoverContent, PopoverTrigger, Square, Stack, Text, useDisclosure } from '@chakra-ui/react'
+import { Button, Container, Grid, GridItem, Heading, Hide, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, Popover, PopoverBody, PopoverContent, PopoverTrigger, ResponsiveValue, Square, Stack, Text, useDisclosure } from '@chakra-ui/react'
 import { Select, SingleValue } from "chakra-react-select";
 import { find, map, keys, includes, filter, orderBy, first, capitalize } from 'lodash'
 import React, { useEffect, useRef } from 'react';
@@ -32,7 +32,7 @@ export default function Game({ characters, answer, totalGuesses = 6 }: GameProps
   const [isComplete, setIsComplete] = useState(false);
   const [guessedCorrectly, setGuessedCorrectly] = useState(false);
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure()
-  const columns = filter(keys(characters[0]), (k: string) => !includes(["_id", "__v", "name", "sex"], k));
+  const columns = filter(keys(characters[0]), (k: string) => !includes(["_id", "__v", "sex"], k));
   const answerChar = find(characters, char => char._id == answer.answer)!
   const initialRender = useRef(true);
 
@@ -102,41 +102,47 @@ export default function Game({ characters, answer, totalGuesses = 6 }: GameProps
     return trim(name1) === trim(name2)
   }
 
-  function renderGuessItem(key: string, content: string) {
+  function renderGuessItem(key: string, content: string, correctness: Correctness) {
     switch (key) {
       case "rarity":
-        return <Text display="flex" alignItems="center">
-          {content}{' '}<StarIcon fontSize={11} />
-        </Text>
+        return <GuessItem correctness={correctness}>
+          <Text display="flex" alignItems="center" textAlign="center">
+            {content}{' '}<StarIcon fontSize={11} />
+          </Text>
+        </GuessItem>
       case "weapon":
       case "element":
-        return <Container
-          display="flex"
-          flexFlow="row"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Popover>
-            <PopoverTrigger>
-              <Image
-                className={key === "element" ? "image-shadow" : ""}
-                src={`/images/hsr/${key}s/${trim(content as string)}.webp`}
-                width="40" height="40"
-                alt={content as string}
-                style={{ margin: "0 0.5rem" }}
-              />
-            </PopoverTrigger>
-            <PopoverContent maxWidth={"7rem"}>
-              <PopoverBody>{content}</PopoverBody>
-            </PopoverContent>
-          </Popover>
-          <Hide breakpoint='(max-width: 768px)'><Text padding={1} minWidth="5.5rem">{content}</Text></Hide>
-        </Container>
+        return <GuessItem correctness={correctness}>
+          <Container
+            display="flex"
+            flexFlow="row"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Popover>
+              <PopoverTrigger>
+                <Image
+                  className={key === "element" ? "image-shadow" : ""}
+                  src={`/images/hsr/${key}s/${trim(content as string)}.webp`}
+                  width="40" height="40"
+                  alt={content as string}
+                  style={{ margin: "0 0.5rem" }}
+                />
+              </PopoverTrigger>
+              <PopoverContent maxWidth={"7rem"}>
+                <PopoverBody>{content}</PopoverBody>
+              </PopoverContent>
+            </Popover>
+            <Hide breakpoint='(max-width: 768px)'><Text padding={1} minWidth="5.5rem">{content}</Text></Hide>
+          </Container>
+        </GuessItem>
       case "sex":
-        return <Text>{first(content as string)?.toUpperCase()}</Text>
+        return <GuessItem correctness={correctness}><Text textAlign="center">{first(content as string)?.toUpperCase()}</Text></GuessItem>
+      case "name":
+        return <Square display="flex" justifyContent="flex-end" marginRight="0.5rem"><Text whiteSpace="pre-wrap" textAlign="right">{content}</Text></Square>
       case "faction":
       case "default":
-        return <Text whiteSpace="pre-wrap">{content}</Text>
+        return <GuessItem correctness={correctness}><Text whiteSpace="pre-wrap" textAlign="center">{content}</Text></GuessItem>
     }
   }
 
@@ -152,9 +158,7 @@ export default function Game({ characters, answer, totalGuesses = 6 }: GameProps
             let correctness = guessChar[key] === answerChar[key] ? Correctness.Correct : Correctness.Incorrect;
 
             return <React.Fragment key={`${guessChar._id}-${i}-${j}`}>
-              <GuessItem correctness={correctness}>
-                {renderGuessItem(col, guessChar[key].toString())}
-              </GuessItem>
+              {renderGuessItem(col, guessChar[key].toString(), correctness)}
             </React.Fragment>
           })}
         </React.Fragment>
@@ -174,9 +178,9 @@ export default function Game({ characters, answer, totalGuesses = 6 }: GameProps
       return <>
         <Image src={`/images/hsr/characters/${trim(answerChar.name)}_splash.webp`} width="512" height="512" alt={answerChar.name} />
         <Text textAlign="center" style={{ marginTop: '1rem' }}>
-          <Highlight query={guesses.length.toString()} styles={{ px: '2', py: '1', rounded: 'full', bg: 'teal.100' }}>
-            {`You guessed correctly in  ${guesses.length.toString()}  ${guesses.length === 1 ? "try! 💯" : " tries!"}`}
-          </Highlight>
+          {'You guessed correctly in '}
+          <span style={{ fontWeight: 700 }}>{guesses.length.toString()}</span>
+          {guesses.length === 1 ? "try! 💯" : " tries!"}
         </Text >
       </>
     }
@@ -215,10 +219,11 @@ export default function Game({ characters, answer, totalGuesses = 6 }: GameProps
       </Stack>
       {guesses.length ?
         <>
-          <Grid templateRows={`repeat(${totalGuesses}, 1fr)`} templateColumns={`repeat(${columns.length}, 1fr)`} gap={1} color="white">
+          <Grid templateRows={`repeat(${totalGuesses}, 1fr)`} templateColumns={`2fr 1.5fr 3fr 3fr 3fr`} gap={1} color="white">
             {map(columns, (col) => {
               let header = col;
               if (header === "weapon") header = "path"
+              else if (header === "name") header = ""
 
               return (
                 <React.Fragment key={`header${col}`}>
@@ -240,12 +245,12 @@ export default function Game({ characters, answer, totalGuesses = 6 }: GameProps
 }
 
 type GuessItemProps = {
-  correctness?: Correctness,
-  children?: React.ReactNode,
+  correctness?: Correctness | null,
+  children?: React.ReactNode
 }
 
-function GuessItem({ correctness, children }: GuessItemProps) {
-  let color = "green";
+function GuessItem({ correctness = null, children }: GuessItemProps) {
+  let color = "none";
 
   switch (correctness) {
     case Correctness.Correct:
@@ -257,6 +262,8 @@ function GuessItem({ correctness, children }: GuessItemProps) {
     case Correctness.Incorrect:
       color = "red";
       break;
+    default:
+      break;
   }
 
   return (
@@ -264,16 +271,12 @@ function GuessItem({ correctness, children }: GuessItemProps) {
       bg={correctness ? `${color}.600` : ""}
     >
       <Square
-        display="flex"
-        alignItems="center"
         fontSize="sm"
         fontWeight={600}
         lineHeight="1rem"
-        textAlign="center"
         style={{ height: '100%' }}
         padding={[0, 0, 1, 1, 1]}
-        border="1px solid rgba(255,255,255,0.4)"
-        centerContent
+        border={correctness ? "1px solid rgba(255,255,255,0.4)" : ""}
       >
         {children}
       </Square>
