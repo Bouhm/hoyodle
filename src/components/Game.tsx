@@ -180,7 +180,7 @@ export default function Game({ characters, answer, totalGuesses = 6 }: GameProps
         <Text textAlign="center" style={{ marginTop: '1rem' }}>
           {'You guessed correctly in '}
           <span style={{ fontWeight: 700 }}>{guesses.length.toString()}</span>
-          {guesses.length === 1 ? "try! 💯" : " tries!"}
+          {guesses.length === 1 ? " try! 💯" : " tries!"}
         </Text >
       </>
     }
