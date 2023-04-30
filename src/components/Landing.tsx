@@ -14,7 +14,7 @@ export default function Landing() {
               width={50}
               height={50}
               alt="Pom Pom"
-              style={{ marginTop: '0.5rem' }}
+              style={{ marginTop: '0.3rem' }}
             />
             <Heading letterSpacing={'-2px'} fontSize={60} style={{ marginLeft: '0.1rem', marginTop: '-0.15rem' }}>DLE</Heading>
           </HStack>

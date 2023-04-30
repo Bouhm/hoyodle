@@ -3,15 +3,17 @@ import { Container, Divider, Heading, ListItem, Stack, UnorderedList } from "@ch
 export default function Changelog() {
   return (
     <Container maxW="container.lg" color="white" paddingTop="2rem">
-      <Heading as='h1' size='2xl' marginBottom="2rem">Changelog</Heading>
+      <Heading size='2xl' marginBottom="2rem">Changes</Heading>
       <Stack spacing={3}>
-        <Heading as='h1'>
+        <Heading >
           v0.2.0
         </Heading>
         <UnorderedList>
           <ListItem>Update landing page</ListItem>
+          <ListItem>Remove M/F hint to increase difficulty</ListItem>
         </UnorderedList>
-        <Heading as='h1'>
+        <Divider />
+        <Heading>
           v0.1.2
         </Heading>
         <UnorderedList>
@@ -19,8 +21,7 @@ export default function Changelog() {
           <ListItem>Use background images</ListItem>
           <ListItem>Add tooltips for mobile</ListItem>
         </UnorderedList>
-        <Divider />
-        <Heading as='h1'>
+        <Heading>
           v0.1.1
         </Heading>
         <UnorderedList>
@@ -28,8 +29,7 @@ export default function Changelog() {
           <ListItem>Deploy on registered domain</ListItem>
           <ListItem>Adjust image resizing on mobile screen width</ListItem>
         </UnorderedList>
-        <Divider />
-        <Heading as='h1'>
+        <Heading >
           v0.1.0
         </Heading>
         <UnorderedList>

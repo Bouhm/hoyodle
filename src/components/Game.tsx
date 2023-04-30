@@ -32,7 +32,7 @@ export default function Game({ characters, answer, totalGuesses = 6 }: GameProps
   const [isComplete, setIsComplete] = useState(false);
   const [guessedCorrectly, setGuessedCorrectly] = useState(false);
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure()
-  const columns = filter(keys(characters[0]), (k: string) => !includes(["_id", "__v", "name"], k));
+  const columns = filter(keys(characters[0]), (k: string) => !includes(["_id", "__v", "name", "sex"], k));
   const answerChar = find(characters, char => char._id == answer.answer)!
   const initialRender = useRef(true);
 
