@@ -130,7 +130,7 @@ export default function Game({ characters, answer, totalGuesses = 6, imgPath }: 
                   style={{ margin: "0 0.5rem" }}
                 />
               </PopoverTrigger>
-              <PopoverContent maxWidth={"7rem"}>
+              <PopoverContent maxWidth={"7rem"} textAlign="center">
                 <PopoverBody>{content}</PopoverBody>
               </PopoverContent>
             </Popover>
