@@ -36,7 +36,7 @@ export default function HonkaiStarRail() {
           size='xl'
         /></AbsoluteCenter>
           :
-          <Game characters={characters} answer={answer} />
+          <Game characters={characters} answer={answer} imgPath="hsr" />
       }
     </Box>
   )

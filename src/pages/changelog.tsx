@@ -6,6 +6,14 @@ export default function Changelog() {
       <Heading size='2xl' marginBottom="2rem">Changes</Heading>
       <Stack spacing={3}>
         <Heading >
+          v0.2.1
+        </Heading>
+        <UnorderedList>
+          <ListItem>Fixed bug where a character used in the last 3 days could show up as an answer</ListItem>
+          <ListItem>Automated scheduling to make new game reset time consistent (4:00 AM UTC-5)</ListItem>
+          <ListItem>Added timer to show remaining time until new game</ListItem>
+        </UnorderedList>
+        <Heading >
           v0.2.0
         </Heading>
         <UnorderedList>

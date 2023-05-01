@@ -23,10 +23,11 @@ type Option = {
 type GameProps = {
   characters: CharacterResponse[],
   answer: AnswerResponse,
-  totalGuesses?: number
+  totalGuesses?: number,
+  imgPath: string,
 }
 
-export default function Game({ characters, answer, totalGuesses = 6 }: GameProps) {
+export default function Game({ characters, answer, totalGuesses = 6, imgPath }: GameProps) {
   const [guesses, setGuesses] = useState<string[]>([]);
   const [guessing, setGuessing] = useState<string>();
   const [isComplete, setIsComplete] = useState(false);
@@ -123,7 +124,7 @@ export default function Game({ characters, answer, totalGuesses = 6 }: GameProps
               <PopoverTrigger>
                 <Image
                   className={key === "element" ? "image-shadow" : ""}
-                  src={`/images/hsr/${key}s/${trim(content as string)}.webp`}
+                  src={`/images/${imgPath}/${key}s/${trim(content as string)}.webp`}
                   width="40" height="40"
                   alt={content as string}
                   style={{ margin: "0 0.5rem" }}
@@ -139,7 +140,24 @@ export default function Game({ characters, answer, totalGuesses = 6 }: GameProps
       case "sex":
         return <GuessItem correctness={correctness}><Text textAlign="center">{first(content as string)?.toUpperCase()}</Text></GuessItem>
       case "name":
-        return <Square display="flex" justifyContent="flex-end" marginRight="0.5rem"><Text whiteSpace="pre-wrap" textAlign="right">{content}</Text></Square>
+        return (
+          <Square>
+            <Popover>
+              <PopoverTrigger>
+                <Image
+                  className="image-shadow"
+                  src={`/images/${imgPath}/characters/${trim(content as string)}.webp`}
+                  width="40" height="40"
+                  alt={content as string}
+                  style={{ margin: "0 0.5rem" }}
+                />
+              </PopoverTrigger>
+              <PopoverContent maxWidth={"7rem"} textAlign="center">
+                <PopoverBody>{content}</PopoverBody>
+              </PopoverContent>
+            </Popover>
+          </Square >
+        )
       case "faction":
       case "default":
         return <GuessItem correctness={correctness}><Text whiteSpace="pre-wrap" textAlign="center">{content}</Text></GuessItem>
@@ -219,7 +237,7 @@ export default function Game({ characters, answer, totalGuesses = 6 }: GameProps
       </Stack>
       {guesses.length ?
         <>
-          <Grid templateRows={`repeat(${totalGuesses}, 1fr)`} templateColumns={`2fr 1.5fr 3fr 3fr 3fr`} gap={1} color="white">
+          <Grid templateRows={`repeat(${totalGuesses}, 1fr)`} templateColumns={`1fr 1fr 2fr 2fr 2fr`} gap={1} color="white">
             {map(columns, (col) => {
               let header = col;
               if (header === "weapon") header = "path"
