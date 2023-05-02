@@ -141,7 +141,7 @@ export default function Game({ characters, answer, totalGuesses = 6, imgPath }: 
         return <GuessItem correctness={correctness}><Text textAlign="center">{first(content as string)?.toUpperCase()}</Text></GuessItem>
       case "name":
         return (
-          <Square>
+          <Square display="flex" justifyContent="flex-end">
             <Popover>
               <PopoverTrigger>
                 <Image
