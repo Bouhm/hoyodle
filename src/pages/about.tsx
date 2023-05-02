@@ -1,8 +1,12 @@
 import { Container, Divider, Heading, ListItem, Stack, UnorderedList, Text } from "@chakra-ui/react";
+import Head from "next/head";
 
 export default function About() {
   return (
     <Container maxW="container.lg" color="white" paddingTop="2rem">
+      <Head>
+        <title>Hoyodle - About</title>
+      </Head>
       <Heading as='h1' size='2xl' marginBottom="2rem">About Hoyodle</Heading>
       <Stack spacing={3}>
         <Text>

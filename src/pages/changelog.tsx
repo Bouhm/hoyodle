@@ -1,8 +1,12 @@
 import { Container, Divider, Heading, ListItem, Stack, UnorderedList } from "@chakra-ui/react";
+import Head from "next/head";
 
 export default function Changelog() {
   return (
     <Container maxW="container.lg" color="white" paddingTop="2rem">
+      <Head>
+        <title>Hoyodle - Changelog</title>
+      </Head>
       <Heading size='2xl' marginBottom="2rem">Changes</Heading>
       <Stack spacing={3}>
         <Heading >

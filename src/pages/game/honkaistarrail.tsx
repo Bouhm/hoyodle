@@ -5,6 +5,7 @@ import useHSRCharacters from '@/components/hooks/useHSRCharacters'
 import { AbsoluteCenter, Box, Center, Container, Spinner } from '@chakra-ui/react'
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
+import Head from 'next/head'
 
 export default function HonkaiStarRail() {
   const { characters, isLoading: isCharactersLoading } = useHSRCharacters();
@@ -27,6 +28,9 @@ export default function HonkaiStarRail() {
       height="100%"
       paddingTop="2rem"
     >
+      <Head>
+        <title>Honkai: Star Rail Puzzle</title>
+      </Head>
       {
         isLoading ? <AbsoluteCenter><Spinner
           thickness='4px'

@@ -8,8 +8,8 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Hoyodle</title>
-        <meta name="description" content="The daily HoYoverse guessing game" />
+        <title>Hoyodle - Daily Puzzle</title>
+        <meta name="description" content="Daily HoYoverse puzzles" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
