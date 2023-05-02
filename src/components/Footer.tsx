@@ -25,7 +25,7 @@ export default function Footer() {
       </Container>
       <Box>
         <Text pt={6} fontSize={'xs'} textAlign={'center'}>
-          Honkai: Star Rail and Genshin Impact are registered trademarks of miHoYo Co., Ltd. Hoyodle is not affiliated with miHoYo.
+          Honkai: Star Rail and Genshin Impact are registered trademarks of miHoYo Co., Ltd.
         </Text>
       </Box>
     </Box>
