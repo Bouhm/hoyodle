@@ -36,7 +36,7 @@ export default function Landing() {
   return (
     <Box paddingTop="2rem">
       <Container>
-        <Center color="white" marginBottom={'3rem'}>
+        <Center color="white" marginBottom={'2rem'}>
           <HStack>
             <Heading letterSpacing={'-3px'} style={{ marginRight: '-0.3rem' }} fontSize={60}>HOY</Heading>
             <Image
@@ -70,7 +70,7 @@ export default function Landing() {
                 <Countdown nowDate={nowDate!} targetDate={resetDate} label={"NEW GAME IN"} />
               }
             </Container>
-            <Text textAlign="center">
+            <Text textAlign="center" fontSize={[12, 16]}>
               More modes and features in development. Stay tuned!
             </Text>
           </VStack>
