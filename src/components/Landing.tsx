@@ -70,9 +70,6 @@ export default function Landing() {
                 <Countdown nowDate={nowDate!} targetDate={resetDate} label={"NEW GAME IN"} />
               }
             </Container>
-            <Text textAlign="center" fontSize={[12, 16]}>
-              More modes and features in development. Stay tuned!
-            </Text>
           </VStack>
         </Center>
       </Container>

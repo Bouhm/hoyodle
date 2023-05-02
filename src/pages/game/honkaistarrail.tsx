@@ -1,22 +1,23 @@
 import Game from '@/components/Game'
 import { useGlobalContext } from '@/components/hooks/useGlobalContext'
-import useHSRAnswer from '@/components/hooks/useHSRAnswer'
+import useHSRGame from '@/components/hooks/useHSRGame'
 import useHSRCharacters from '@/components/hooks/useHSRCharacters'
 import { AbsoluteCenter, Box, Center, Container, Spinner } from '@chakra-ui/react'
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Head from 'next/head'
+import useHSRPlays from '@/components/hooks/useHSRPlays'
 
 export default function HonkaiStarRail() {
   const { characters, isLoading: isCharactersLoading } = useHSRCharacters();
-  const { answer, isLoading: isAnswerLoading } = useHSRAnswer();
+  const { game, isLoading: isAnswerLoading } = useHSRGame();
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    if (characters && answer) {
+    if (characters && game) {
       setIsLoading(false)
     }
-  }, [isCharactersLoading, isAnswerLoading, answer, characters, setIsLoading])
+  }, [isCharactersLoading, isAnswerLoading, game, characters, setIsLoading])
 
   return (
     <Box
@@ -40,7 +41,7 @@ export default function HonkaiStarRail() {
           size='xl'
         /></AbsoluteCenter>
           :
-          <Game characters={characters} answer={answer} imgPath="hsr" />
+          <Game game={game} characters={characters} imgPath="hsr" />
       }
     </Box>
   )

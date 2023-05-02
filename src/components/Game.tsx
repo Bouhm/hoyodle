@@ -5,9 +5,11 @@ import { find, map, keys, includes, filter, orderBy, first, capitalize } from 'l
 import React, { useEffect, useRef } from 'react';
 import { useState } from 'react';
 import Image from 'next/image'
-import AnswerResponse from './interfaces/AnswerResponse';
+import GameResponse from './interfaces/GameResponse';
 import CharacterResponse from './interfaces/CharacterResponse';
 import { ArrowForwardIcon, StarIcon } from '@chakra-ui/icons';
+import useApi from './hooks/useApi';
+
 
 enum Correctness {
   Correct = "Correct",
@@ -21,49 +23,65 @@ type Option = {
 }
 
 type GameProps = {
+  game: GameResponse,
   characters: CharacterResponse[],
-  answer: AnswerResponse,
   totalGuesses?: number,
   imgPath: string,
 }
 
-export default function Game({ characters, answer, totalGuesses = 6, imgPath }: GameProps) {
+export default function Game({ game, characters, totalGuesses = 6, imgPath }: GameProps) {
+  const { post } = useApi();
+
   const [guesses, setGuesses] = useState<string[]>([]);
   const [guessing, setGuessing] = useState<string>();
   const [isComplete, setIsComplete] = useState(false);
   const [guessedCorrectly, setGuessedCorrectly] = useState(false);
+  const [loadedFromLocalStorage, setLoadedFromLocalStorage] = useState(false);
+
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure()
   const columns = filter(keys(characters[0]), (k: string) => !includes(["_id", "__v", "sex"], k));
-  const answerChar = find(characters, char => char._id == answer.answer)!
+  const answerChar = find(characters, char => char._id == game.answer)!
   const initialRender = useRef(true);
 
   // Get cached data
   useEffect(() => {
     if (typeof window !== 'undefined' && window.localStorage) {
+      console.log("local storage")
       let lastGameId = localStorage.getItem('lastGameId');
       let storedGuesses = JSON.parse(localStorage.getItem('guesses')!) as string[];
       let hasCompleted = JSON.parse(localStorage.getItem('hasCompleted')!) as boolean;
 
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      if (lastGameId === answer._id && Array.isArray(storedGuesses)) {
+      if (lastGameId === game._id && Array.isArray(storedGuesses)) {
         setGuesses(storedGuesses);
         setIsComplete(hasCompleted);
+        console.log(hasCompleted)
+        onModalOpen()
       }
+
+      setLoadedFromLocalStorage(true);
     }
   }, []);
 
   // Check for game completion
   useEffect(() => {
+    if (!loadedFromLocalStorage) return;
+
+    console.log("not local storage")
+    console.log(isComplete)
     if (guesses.length && (guesses.length >= totalGuesses || includes(guesses, answerChar.name))) {
       if (initialRender.current) {
         initialRender.current = false;
         return;
       }
-      setIsComplete(true)
-      setGuessedCorrectly(includes(guesses, answerChar.name))
-      onModalOpen()
+
+      if (!isComplete) {
+        setIsComplete(true)
+        setGuessedCorrectly(includes(guesses, answerChar.name))
+        onModalOpen()
+      }
     }
-  }, [guesses, answerChar.name, onModalOpen])
+  }, [isComplete, guesses, answerChar.name, onModalOpen, loadedFromLocalStorage])
 
   useEffect(() => {
     if (initialRender.current) {
@@ -71,7 +89,7 @@ export default function Game({ characters, answer, totalGuesses = 6, imgPath }: 
       return;
     }
 
-    localStorage.setItem('lastGameId', answer._id)
+    localStorage.setItem('lastGameId', game._id)
     localStorage.setItem('guesses', JSON.stringify(guesses))
   }, [guesses])
 

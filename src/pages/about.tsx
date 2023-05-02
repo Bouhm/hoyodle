@@ -27,6 +27,9 @@ export default function About() {
           <ListItem>Genshin Impact version</ListItem>
         </UnorderedList>
       </Stack>
+      <Text textAlign="center" fontSize={[12, 16]}>
+        More modes and features in development. Stay tuned!
+      </Text>
     </Container>
   )
 
