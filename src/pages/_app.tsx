@@ -7,6 +7,7 @@ import type { AppProps } from 'next/app'
 import theme from '@/styles/theme';
 import { GlobalContextProvider } from '@/components/contexts/globalContexts';
 import Layout from '@/components/Layout';
+import { Analytics } from '@vercel/analytics/react';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -20,6 +21,7 @@ export default function App({ Component, pageProps }: AppProps) {
           </DarkMode>
         </GlobalContextProvider>
       </ChakraProvider>
+      <Analytics />
     </>
   )
 
