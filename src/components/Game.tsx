@@ -156,7 +156,7 @@ export default function Game({ characters, answer, totalGuesses = 5, imgPath }: 
         const guessChar = find(characters, char => areNamesEqual(char.name, guess))!;
         return <React.Fragment key={`${guessChar._id}-${i}`}>
           <>
-            <Square display="flex" justifyContent="flex-end" className={styles[`rarity${guessChar.rarity}`]}>
+            <Square display="flex" justifyContent="flex-end" className={`${styles[`rarity${guessChar.rarity}`]} ${styles.slideIn}`}>
               <Popover>
                 <PopoverTrigger>
                   <Image
@@ -207,7 +207,7 @@ export default function Game({ characters, answer, totalGuesses = 5, imgPath }: 
   return (<>
     <Modal isOpen={isModalOpen} onClose={onModalClose} isCentered motionPreset='scale'>
       <ModalOverlay />
-      <ModalContent color="white">
+      <ModalContent color="white" className={styles.scaleIn}>
         <ModalCloseButton />
         <ModalBody marginTop="1rem">
           {renderResultMessage()}
@@ -249,7 +249,9 @@ export default function Game({ characters, answer, totalGuesses = 5, imgPath }: 
                 </React.Fragment>
               )
             })}
-            {renderGuessResults()}
+            <React.Fragment>
+              {renderGuessResults()}
+            </React.Fragment>
           </Grid>
         </>
         :
@@ -287,6 +289,7 @@ function GuessItem({ correctness = null, children }: GuessItemProps) {
   return (
     <GridItem
       bg={correctness ? `${color}.600` : ""}
+      className={styles.slideIn}
     >
       <Square
         fontSize="sm"
