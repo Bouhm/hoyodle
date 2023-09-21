@@ -8,6 +8,7 @@ import Image from 'next/image'
 import AnswerResponse from './interfaces/AnswerResponse';
 import CharacterResponse from './interfaces/CharacterResponse';
 import { ArrowForwardIcon, StarIcon } from '@chakra-ui/icons';
+import styles from '@/styles/Game.module.css'
 
 enum Correctness {
   Correct = "Correct",
@@ -27,7 +28,7 @@ type GameProps = {
   imgPath: string,
 }
 
-export default function Game({ characters, answer, totalGuesses = 6, imgPath }: GameProps) {
+export default function Game({ characters, answer, totalGuesses = 5, imgPath }: GameProps) {
   const [guesses, setGuesses] = useState<string[]>([]);
   const [guessing, setGuessing] = useState<string>();
   const [isComplete, setIsComplete] = useState(false);
@@ -105,6 +106,8 @@ export default function Game({ characters, answer, totalGuesses = 6, imgPath }: 
 
   function renderGuessItem(key: string, content: string, correctness: Correctness) {
     switch (key) {
+      case "name":
+        return;
       case "rarity":
         return <GuessItem correctness={correctness}>
           <Text display="flex" alignItems="center" textAlign="center">
@@ -139,25 +142,6 @@ export default function Game({ characters, answer, totalGuesses = 6, imgPath }: 
         </GuessItem>
       case "sex":
         return <GuessItem correctness={correctness}><Text textAlign="center">{first(content as string)?.toUpperCase()}</Text></GuessItem>
-      case "name":
-        return (
-          <Square display="flex" justifyContent="flex-end">
-            <Popover>
-              <PopoverTrigger>
-                <Image
-                  className="image-shadow"
-                  src={`/images/${imgPath}/characters/${trim(content as string)}.webp`}
-                  width="40" height="40"
-                  alt={content as string}
-                  style={{ margin: "0 0.5rem" }}
-                />
-              </PopoverTrigger>
-              <PopoverContent maxWidth={"7rem"} textAlign="center">
-                <PopoverBody>{content}</PopoverBody>
-              </PopoverContent>
-            </Popover>
-          </Square >
-        )
       case "faction":
       case "default":
         return <GuessItem correctness={correctness}><Text whiteSpace="pre-wrap" textAlign="center">{content}</Text></GuessItem>
@@ -171,14 +155,30 @@ export default function Game({ characters, answer, totalGuesses = 6, imgPath }: 
       {map(guesses, (guess, i) => {
         const guessChar = find(characters, char => areNamesEqual(char.name, guess))!;
         return <React.Fragment key={`${guessChar._id}-${i}`}>
-          {map(columns, (col, j) => {
-            const key = col as keyof CharacterResponse;
-            let correctness = guessChar[key] === answerChar[key] ? Correctness.Correct : Correctness.Incorrect;
+          <>
+            <Square display="flex" justifyContent="flex-end" className={styles[`rarity${guessChar.rarity}`]}>
+              <Popover>
+                <PopoverTrigger>
+                  <Image
+                    src={`/images/${imgPath}/characters/${trim(guessChar.name)}.webp`}
+                    width="50" height="50"
+                    alt={guessChar.name}
+                  />
+                </PopoverTrigger>
+                <PopoverContent maxWidth={"7rem"} textAlign="center">
+                  <PopoverBody>{guessChar.name}</PopoverBody>
+                </PopoverContent>
+              </Popover>
+            </Square >
+            {map(columns, (col, j) => {
+              const key = col as keyof CharacterResponse;
+              let correctness = guessChar[key] === answerChar[key] ? Correctness.Correct : Correctness.Incorrect;
 
-            return <React.Fragment key={`${guessChar._id}-${i}-${j}`}>
-              {renderGuessItem(col, guessChar[key].toString(), correctness)}
-            </React.Fragment>
-          })}
+              return <React.Fragment key={`${guessChar._id}-${i}-${j}`}>
+                {renderGuessItem(col, guessChar[key].toString(), correctness)}
+              </React.Fragment>
+            })}
+          </>
         </React.Fragment>
       })}
     </>
@@ -237,7 +237,7 @@ export default function Game({ characters, answer, totalGuesses = 6, imgPath }: 
       </Stack>
       {guesses.length ?
         <>
-          <Grid templateRows={`repeat(${totalGuesses}, 1fr)`} templateColumns={`1fr 1fr 2fr 2fr 2fr`} gap={1} color="white">
+          <Grid templateRows={`repeat(${totalGuesses}, 1fr)`} templateColumns={`50px 1fr 2fr 2fr 2fr`} gap={1} color="white">
             {map(columns, (col) => {
               let header = col;
               if (header === "weapon") header = "path"
