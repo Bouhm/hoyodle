@@ -28,7 +28,7 @@ type GameProps = {
   imgPath: string,
 }
 
-export default function Game({ characters, answer, totalGuesses = 5, imgPath }: GameProps) {
+export default function Game({ characters, answer, totalGuesses = 99, imgPath }: GameProps) {
   const [guesses, setGuesses] = useState<string[]>([]);
   const [guessing, setGuessing] = useState<string>();
   const [isComplete, setIsComplete] = useState(false);
