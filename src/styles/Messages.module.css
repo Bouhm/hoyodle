@@ -6,13 +6,9 @@
   src: url("/fonts/DIN Medium.ttf");
 }
 
-
-
 .messagesContainer {
-  width: 800px;
-  height: 600px;
   padding: 0 !important;
-  background-color: #D6D7DC;
+  background-color: #D4D4D4;
   border-radius: 0 50px 0 0;
 }
 
@@ -34,6 +30,15 @@
 }
 
 .messageContainer {
+  margin-bottom: 1rem;
+}
+
+.messageContainer.NPC {
+  margin-bottom: 1rem;
+}
+
+.messageContainer.Player,
+.messageContainer.PlayerAuto {
   margin-bottom: 1rem;
 }
 
@@ -59,20 +64,38 @@
 }
 
 .messages .messageContent {
-  margin-left: 1rem;
+  margin: 0 1rem 0 1rem;
 }
 
 .messages .messageName {
   color: #63656A;
+  font-size: 1.2em;
+  font-weight: 600;
   margin: 0.2rem;
 }
 
+.messages .messageAvatar {
+  background-color: #3A3A3A;
+}
+
 .messages .messageBox {
-  background: #EBEBEB;
-  border-radius: 0 10px 10px 10px;
-  padding: 0.5rem 0.5rem 0.5rem 1rem;
+  padding: 0.5rem 1rem 0.5rem 1rem;
   font-size: 1.5em;
   color: #2A2A2A;
 }
+
+.messages .messageBox.NPC {
+  background: #EBEBEB;
+  border-radius: 0 12px 12px 12px;
+  box-shadow: -2px 4px 2px -2px #ACACAC;
+}
+
+.messages .messageBox.Player,
+.messages .messageBox.PlayerAuto {
+  background: #D0BD95;
+  border-radius: 12px 0px 12px 12px;
+  box-shadow: 2px 4px 2px -2px #ACACAC;
+}
+
 
 .playerGuesses {}

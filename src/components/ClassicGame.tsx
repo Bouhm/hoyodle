@@ -4,9 +4,9 @@ import { Select, SingleValue } from "chakra-react-select";
 import { find, map, keys, includes, filter, orderBy, first, capitalize } from 'lodash'
 import React, { useEffect, useRef } from 'react';
 import { useState } from 'react';
-import Image from 'next/image'
-import AnswerResponse from './interfaces/AnswerResponse';
-import CharacterResponse from './interfaces/CharacterResponse';
+import Image from 'next/image';
+import GameResponse from './interfaces';
+import CharacterResponse from './interfaces';
 import { ArrowForwardIcon, StarIcon } from '@chakra-ui/icons';
 import styles from '@/styles/Game.module.css'
 
@@ -21,21 +21,22 @@ type Option = {
   value: string
 }
 
-type GameProps = {
+type ClassicGameProps = {
   characters: CharacterResponse[],
-  answer: AnswerResponse,
+  gameId: string,
+  answer: string,
   totalGuesses?: number,
   imgPath: string,
 }
 
-export default function Game({ characters, answer, totalGuesses = 99, imgPath }: GameProps) {
+export default function ClassicGame({ characters, gameId, answer, totalGuesses = 5, imgPath }: ClassicGameProps) {
   const [guesses, setGuesses] = useState<string[]>([]);
   const [guessing, setGuessing] = useState<string>();
   const [isComplete, setIsComplete] = useState(false);
   const [guessedCorrectly, setGuessedCorrectly] = useState(false);
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure()
   const columns = ["name", "rarity", "element", "weapon", "faction"];
-  const answerChar = find(characters, char => char._id == answer.answer)!
+  const answerChar = find(characters, char => char._id == answer)!
   const initialRender = useRef(true);
 
   // Get cached data
@@ -46,7 +47,7 @@ export default function Game({ characters, answer, totalGuesses = 99, imgPath }:
       let hasCompleted = JSON.parse(localStorage.getItem('hasCompleted')!) as boolean;
 
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      if (lastGameId === answer._id && Array.isArray(storedGuesses)) {
+      if (lastGameId === gameId && Array.isArray(storedGuesses)) {
         setGuesses(storedGuesses);
         setIsComplete(hasCompleted);
       }
@@ -72,7 +73,7 @@ export default function Game({ characters, answer, totalGuesses = 99, imgPath }:
       return;
     }
 
-    localStorage.setItem('lastGameId', answer._id)
+    localStorage.setItem('lastGameId', gameId)
     localStorage.setItem('guesses', JSON.stringify(guesses))
   }, [guesses])
 

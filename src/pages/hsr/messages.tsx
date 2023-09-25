@@ -1,35 +1,15 @@
-
+import useHSRGame from '@/components/hooks/useHSRGame';
 import { AbsoluteCenter, Avatar, Box, Center, Container, Flex, Heading, Spinner, VStack } from '@chakra-ui/react'
-import Chat, { Message } from "../../components/Chat";
-
-const messages: Message[] = [
-  {
-    name: "Serval",
-    message: "Oh, right! I want to put people's impressions of my music on the poster for my next concert"
-  },
-  {
-    name: "Serval",
-    message: "Can you contribute a comment or two, Trailblazer?"
-  },
-  {
-    name: "Serval",
-    message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-  },
-  {
-    name: "Serval",
-    message: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-  },
-  {
-    name: "Serval",
-    message: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
-  },
-  {
-    name: "Serval",
-    message: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-  },
-]
+import MessagesGame from "@/components/MessagesGame";
+import useHSRCharacters from '@/components/hooks/useHSRCharacters';
+import Head from 'next/head';
+import useSWR from 'swr';
+import fetcher from '@/components/hooks/fetcher';
 
 export default function Messages() {
+  const { characters, isLoading: isCharactersLoading } = useHSRCharacters();
+  const { game, isLoading: isGameLoading } = useHSRGame();
+  const { data: message } = useSWR(game ? 'https://hoyodle.fly.dev/api/v1/hsr/messages/' + game.messagesAnswer : null, fetcher)
 
   return (
     <Box
@@ -41,9 +21,23 @@ export default function Messages() {
       height="100%"
       paddingTop="2rem"
     >
-      <Center>
-        <Chat messages={messages} />
-      </Center>
+      <Head>
+        <title>Honkai: Star Rail Puzzle</title>
+      </Head>
+      {
+        (isCharactersLoading || isGameLoading || !message) ? (
+          <AbsoluteCenter>
+            <Spinner
+              thickness='4px'
+              speed='0.65s'
+              emptyColor='gray.200'
+              color='purple.500'
+              size='xl'
+            />
+          </AbsoluteCenter>)
+          :
+          <MessagesGame characters={characters} gameId={game._id} message={message} imgPath="hsr" />
+      }
     </Box>
   )
 }
