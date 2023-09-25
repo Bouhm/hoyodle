@@ -34,7 +34,7 @@ export default function Game({ characters, answer, totalGuesses = 99, imgPath }:
   const [isComplete, setIsComplete] = useState(false);
   const [guessedCorrectly, setGuessedCorrectly] = useState(false);
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure()
-  const columns = filter(keys(characters[0]), (k: string) => !includes(["_id", "__v", "sex"], k));
+  const columns = ["name", "rarity", "element", "weapon", "faction"];
   const answerChar = find(characters, char => char._id == answer.answer)!
   const initialRender = useRef(true);
 
@@ -122,15 +122,17 @@ export default function Game({ characters, answer, totalGuesses = 99, imgPath }:
             flexFlow="row"
             alignItems="center"
             justifyContent="center"
+            height={"100%"}
           >
             <Popover>
               <PopoverTrigger>
                 <Image
                   className={key === "element" ? "image-shadow" : ""}
                   src={`/images/${imgPath}/${key}s/${trim(content as string)}.webp`}
-                  width="40" height="40"
+                  width={40}
+                  height={40}
                   alt={content as string}
-                  style={{ margin: "0 0.5rem" }}
+                  style={{ margin: "0 0.5rem", height: "40px", width: "40px" }}
                 />
               </PopoverTrigger>
               <PopoverContent maxWidth={"7rem"} textAlign="center">
@@ -237,7 +239,7 @@ export default function Game({ characters, answer, totalGuesses = 99, imgPath }:
       </Stack>
       {guesses.length ?
         <>
-          <Grid templateRows={`repeat(${totalGuesses}, 1fr)`} templateColumns={`50px 1fr 2fr 2fr 2fr`} gap={1} color="white">
+          <Grid templateRows={`repeat(${totalGuesses}, 1fr)`} templateColumns={`50px 50px 2fr 2fr 2fr`} gap={1} color="white">
             {map(columns, (col) => {
               let header = col;
               if (header === "weapon") header = "path"

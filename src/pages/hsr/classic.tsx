@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Head from 'next/head'
 
-export default function HonkaiStarRail() {
+export default function ClassicMode() {
   const { characters, isLoading: isCharactersLoading } = useHSRCharacters();
   const { answer, isLoading: isAnswerLoading } = useHSRAnswer();
   const [isLoading, setIsLoading] = useState(true)

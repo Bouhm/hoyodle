@@ -2,8 +2,11 @@ import { ChevronDownIcon, ChevronRightIcon, CloseIcon, HamburgerIcon } from '@ch
 import {
   Box,
   Button,
+  Center,
   Collapse,
   Flex,
+  Heading,
+  HStack,
   Icon,
   IconButton,
   Link,
@@ -16,7 +19,7 @@ import {
   useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react';
-import Logo from './Logo';
+import Image from "next/image";
 
 export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
@@ -46,16 +49,36 @@ export default function WithSubnavigation() {
             aria-label={'Toggle Navigation'}
           />
         </Flex>
-        <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
-          <Text
-            textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
-            fontFamily={'heading'}
-            color={useColorModeValue('whiteAlpha.50', 'white')}>
+        <Flex flex={{ base: 1 }} justify={{ base: 'center' }}>
+          <HStack>
+            <Heading
+              letterSpacing={'-4px'}
+              lineHeight={'2rem'}
+              style={{ marginRight: '-0.3rem' }}
+              fontSize={60}
+              display={{ base: 'none', md: 'initial' }}
+            >
+              HOY
+            </Heading>
             <Link href="/">
-              <Logo />
+              <Image
+                src="/logo.png"
+                width={50}
+                height={50}
+                alt="Pom Pom"
+                style={{ marginTop: '0.3rem' }}
+              />
             </Link>
-          </Text>
-
+            <Heading
+              letterSpacing={'-2px'}
+              lineHeight={'2rem'}
+              fontSize={60}
+              style={{ marginLeft: '0.1rem', marginTop: '-0.15rem' }}
+              display={{ base: 'none', md: 'initial' }}
+            >
+              DLE
+            </Heading>
+          </HStack>
           <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
             <DesktopNav />
           </Flex>
@@ -221,10 +244,10 @@ interface NavItem {
 }
 
 const NAV_ITEMS: Array<NavItem> = [
-  {
-    label: 'Honkai: Star Rail',
-    href: '/game/honkaistarrail'
-  },
+  // {
+  //   label: 'Honkai: Star Rail',
+  //   href: '/game/honkaistarrail'
+  // },
   // {
   //   label: 'Genshin Impact',
   // },
